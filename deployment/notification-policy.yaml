@@ -1,0 +1,21 @@
+apiVersion: 1
+policies:
+    - orgId: 1
+      receiver: Grafana-IRM
+      group_by:
+        - grafana_folder
+        - alertname
+        - destionation_service_name
+      routes:
+        - receiver: discord-IRM
+          object_matchers:
+            - - severity
+              - =
+              - critical
+          continue: true
+        - receiver: Grafana-IRM
+          object_matchers:
+            - - severity
+              - =
+              - critical
+          continue: true

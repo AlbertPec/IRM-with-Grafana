@@ -1,0 +1,10 @@
+apiVersion: 1
+contactPoints:
+    - orgId: 1
+      name: Grafana-IRM
+      receivers:
+          - uid: b98fe99f-a7b0-498d-9388-a51333a88282
+            type: webhook
+            settings:
+                url: https://incident-prod-us-east-3.grafana.net/oncall/integrations/v1/alertmanager/{GRAFANA_IRM_TOKEN}
+            disableResolveMessage: false
