@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "grafana": {
+      "command": "uvx",
+      "args": [
+        "mcp-grafana"
+      ],
+      "env": {
+        "GRAFANA_URL": "<GRAFANA_URL>",
+        "GRAFANA_SERVICE_ACCOUNT_TOKEN": "<GRAFANA_SERVICE_ACCOUNT_TOKEN>"
+      }
+    },
+    "grafana-oncall-write": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/<ORG_LUB_USER>/IRM-with-Grafana.git",
+        "grafana-oncall-write"
+      ],
+      "env": {
+        "GRAFANA_URL": "<GRAFANA_URL>",
+        "GRAFANA_STACK_URL": "<GRAFANA_STACK_URL>",
+        "GRAFANA_ONCALL_API_URL": "https://incident-prod-us-east-3.grafana.net/oncall",
+        "GRAFANA_ONCALL_API_TOKEN": "<GRAFANA_ONCALL_API_TOKEN>"
+      }
+    }
+  }
+}
