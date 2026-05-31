@@ -1,0 +1,10 @@
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+    name: default
+    namespace: istio-system
+spec:
+    tracing:
+        - providers:
+              - name: jaeger # This now perfectly matches your ConfigMap
+          randomSamplingPercentage: 100.0

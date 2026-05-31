@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: grafana
+    namespace: istio-system
+spec:
+    template:
+        spec:
+            containers:
+                - name: grafana
+                  env:
+                      - name: GF_IRM_WEBHOOK_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: grafana-secrets
+                                key: irm-webhook-url
+                      - name: GF_DISCORD_WEBHOOK_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: grafana-secrets
+                                key: discord-webhook-url
+                      - name: GF_FEATURE_TOGGLES_ENABLE
+                        value: alertingCentralAlertHistory
+                  volumeMounts:
+                      - name: custom-alerting
+                        mountPath: /etc/grafana/provisioning/alerting
+            volumes:
+                - name: custom-alerting
+                  configMap:
+                      name: grafana-custom-alerting
