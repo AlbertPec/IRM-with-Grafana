@@ -1,6 +1,12 @@
 #!/bin/bash
 
-source ../.env
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+
+source "$ROOT_DIR/.env"
+source "$ROOT_DIR/common.sh"
 
 kubectl create secret generic grafana-secrets \
   -n istio-system \
@@ -15,3 +21,5 @@ kubectl patch deployment grafana \
 
 kubectl rollout restart deployment/grafana -n istio-system
 kubectl rollout status deployment/grafana -n istio-system --timeout=120s
+
+wait_for_pods "istio-system" 60
