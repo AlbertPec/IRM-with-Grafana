@@ -1,23 +1,10 @@
 ## App deployment
 
-Connect with kubernetes cluster and then install istio, application and grafana:
+To deploy the application run 
 ```shell
-istioctl manifest apply --set profile=demo
-
-kubectl label namespace default istio-injection=enabled
-
-kubectl apply -f app/release/kubernetes/manifests.yaml
-
-kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.21/samples/addons/prometheus.yaml
-
-kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.21/samples/addons/grafana.yaml
+./deploy.sh
 ```
-
-After that path grafana with:
-```shell
-cd deployment
-./grafana_deploy.sh
-```
+in the terminal.
 
 ## About .env
 For now deployment requires 2 variables to be present in .env file: `GF_IRM_WEBHOOK_URL` and 
