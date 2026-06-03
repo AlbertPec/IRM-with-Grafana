@@ -1,0 +1,11 @@
+apiVersion: 1
+contactPoints:
+    - orgId: 1
+      name: discord-IRM
+      receivers:
+          - uid: bf9ebf85-e864-4043-a083-596932c5108e
+            type: discord
+            settings:
+                url: https://discord.com/api/webhooks/1507759055341621493/{GRAFANA_DISCORD_TOKEN}
+                use_discord_username: false
+            disableResolveMessage: false

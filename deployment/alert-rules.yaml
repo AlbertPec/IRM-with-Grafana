@@ -1,0 +1,159 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: Service_alerts_group
+      folder: istio
+      interval: 1m
+      rules:
+        - uid: d55c9fdf-71d6-49e4-9d37-f29c4069c671
+          title: P99_filter
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: PBFA97CFB590B2093
+              model:
+                editorMode: code
+                expr: |-
+                    histogram_quantile(
+                        0.99,
+                        sum(rate(istio_request_duration_milliseconds_bucket[5m]))
+                        by (le, destination_service_name)
+                    ) > 0
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                settings:
+                    mode: ""
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 2000
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 2m
+          annotations:
+            description: Fix it!
+            summary: P99 exceeded threshold on {{ $labels.destination_service_name }}
+          labels:
+            alertname: latency_alert
+            severity: critical
+          isPaused: false
+    - orgId: 1
+      name: pierniczki
+      folder: istio
+      interval: 1m
+      rules:
+        - uid: cefe0fa9-74c5-4321-b05a-26cad90f7e34
+          title: BadRequest_error
+          condition: B
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: PBFA97CFB590B2093
+              model:
+                editorMode: code
+                expr: "100 *\r\nsum by(service) (\r\n    rate(istio_requests_total{response_code!~\"5..|4..\"}[1m])\r\n)\r\n/\r\nsum by(service) (\r\n  rate(istio_requests_total[1m])\r\n)\r\n"
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 85
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 2m
+          annotations:
+            description: ma dzialac
+            summary: ma dzialac
+          labels:
+            alertname: BadRequest_allert
+            severity: critical
+          isPaused: false
