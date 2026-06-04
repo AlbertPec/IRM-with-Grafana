@@ -33,12 +33,12 @@ Nie czekaj na dalsze instrukcje — załaduj schematy jako pierwszy krok.
 | Nazwa       | ID               | Team    | Shift (aktywny)                        |
 |-------------|------------------|---------|----------------------------------------|
 | A-schedule  | SYF5D511EYWEQ    | team A  | OG4ABZNUV47C1                          |
-| B-schedule  | STSJNGSNHYYMZ    | team B  | O3ZUK6R75RBMT (rolling_users, baza), OURITLJC3T67I (override) |
+| B-schedule  | STSJNGSNHYYMZ    | team B  | OD7WUU21AUYQP (rolling_users, baza), OURITLJC3T67I (override) |
 
 ### Shifty B-schedule — szczegóły
 | ID               | Typ           | Rola              | Uwagi                                      |
 |------------------|---------------|-------------------|--------------------------------------------|
-| O3ZUK6R75RBMT    | rolling_users | bazowa rotacja    | start 22:00 UTC daily; edytuj przez curl   |
+| OD7WUU21AUYQP    | rolling_users | bazowa rotacja    | start 22:00 UTC daily; edytuj przez curl   |
 | OURITLJC3T67I    | override      | nadpisanie rotacji| API ustawia start na "teraz" przy PUT      |
 
 ### Grafana numeric user IDs (do /api/teams)
@@ -93,9 +93,9 @@ Parametry kluczowe (wszystkie wymagane w payloadzie):
 - `rolling_users`: `[["<user_id>"]]` — lista list (jedna osoba per slot)
 Uwagi: `schedule` jest read-only, nie trzeba go podawać. Shift musi już być podpięty do schedule.
 
-Przykład dla B-schedule (shift O3ZUK6R75RBMT):
+Przykład dla B-schedule (shift OD7WUU21AUYQP):
 ```bash
-curl -s -X PUT "$ONCALL_URL/api/v1/on_call_shifts/O3ZUK6R75RBMT/" \
+curl -s -X PUT "$ONCALL_URL/api/v1/on_call_shifts/OD7WUU21AUYQP/" \
   -H "Authorization: $TOKEN" -H "Content-Type: application/json" \
   -H "X-Grafana-URL: https://mnowak.grafana.net" \
   -d '{"name":"Layer 1 Rotation","type":"rolling_users","team_id":"T2NAICDZVW171",
